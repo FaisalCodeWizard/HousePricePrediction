@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Housing Price</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(219, 232, 232); /* Light gray background */
+            color: #343a40; /* Dark text color */
+            text-align: center;
+        }
+        .main {
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff; /* White background */
+            border-radius: 8px;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;;
+            max-width: 800px; /* Max width for larger screens */
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #9900ff; /* Bootstrap primary color */
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: DarkRed;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type=submit] {
+            background-color: #9900ff; /* Bootstrap primary color */
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        input[type=submit]:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+        .row > div {
+            margin-bottom: 15px; /* Spacing between inputs */
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>Please Enter the Following Values:</h1>
+        <form action="result" method="get">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="n1"><b>Property Area (sqft)</b></label>
+                    <input type="text" name="n1" class="form-control" id="n1" required>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="n2"><b>Number of Bedrooms</b></label>
+                    <select name="n2" class="form-control" id="n2" required>
+                        <option value="" disabled selected>Select Number of Bedrooms</option>
+                        <option value="1">1 Bedroom</option>
+                        <option value="2">2 Bedrooms</option>
+                        <option value="3">3 Bedrooms</option>
+                        <option value="4">4 Bedrooms</option>
+                        <option value="5">5 Bedrooms</option>
+                    </select>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="n3"><b>Number of Stories</b></label>
+                    <select name="n3" class="form-control" id="n3" required>
+                        <option value="" disabled selected>Select Number of Stories</option>
+                        <option value="1">1 Story</option>
+                        <option value="2">2 Stories</option>
+                        <option value="3">3 Stories</option>
+                        <option value="4">4 Stories</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="n4"><b>Number of Parking Spaces</b></label>
+                    <select name="n4" class="form-control" id="n4" required>
+                        <option value="" disabled selected>Select Number of Parking Spaces</option>
+                        <option value="0">0 Spaces</option>
+                        <option value="1">1 Space</option>
+                        <option value="2">2 Spaces</option>
+                        <option value="3">3 Spaces</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4 form-group">
+                    <label for="n5"><b>Furnishing Status</b></label>
+                    <select name="n5" class="form-control" id="n5" required>
+                        <option value="" disabled selected>Select Furnishing Status</option>
+                        <option value="1">Furnished</option>
+                        <option value="2">Semi-Furnished</option>
+                        <option value="3">Unfurnished</option>
+                    </select>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="n6"><b>Price Per SQFT</b></label>
+                    <input type="text" name="n6" class="form-control" id="n6" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-group">
+                    <input type="submit" value="PREDICT">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <h2>{{ result2 }}</h2>
+        </div>
+    </div>
+</body>
+</html>
