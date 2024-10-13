@@ -1,12 +1,13 @@
 from django.shortcuts import render
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV
+from sklearn.model_selection import train_test_split, ShuffleSplit, GridSearchCV, cross_val_score
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
 
 def home(request):
     return render(request, "home.html")
@@ -36,60 +37,13 @@ def result(request):
 
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=10)
 
-    # Applying multiple models to find the best
-    def find_best_model_using_gridsearchcv(X, Y):
-        algos = {
-            'linear_regression': {
-                'model': make_pipeline(StandardScaler(), LinearRegression()),
-                'params': {
-                    'linearregression__fit_intercept': [True, False]
-                }
-            },
-            'lasso': {
-                'model': Pipeline([('scaler', StandardScaler()), ('lasso', Lasso())]),
-                'params': {
-                    'lasso__alpha': [1, 2],
-                    'lasso__selection': ['random', 'cyclic']
-                }
-            },
-            'decision_tree': {
-                'model': DecisionTreeRegressor(),
-                'params': {
-                    'criterion': ['squared_error', 'friedman_mse'],
-                    'splitter': ['best', 'random']
-                }
-            },
-            'random_forest': {
-                'model': RandomForestRegressor(),
-                'params': {
-                    'n_estimators': [50, 100, 200],
-                    'max_features': ['auto', 'sqrt'],
-                    'max_depth': [None, 10, 20, 30],
-                    'min_samples_split': [2, 5, 10]
-                }
-            }
-        }
-
-        scores = []
-        cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
-
-        for algo_name, config in algos.items():
-            gs = GridSearchCV(config['model'], config['params'], cv=cv, return_train_score=False)
-            gs.fit(X, Y)
-            scores.append({
-                'model': algo_name,
-                'best_score': gs.best_score_,
-                'best_params': gs.best_params_
-            })
-
-        return pd.DataFrame(scores, columns=['model', 'best_score', 'best_params'])
-
-    # Find the best model (this will output the DataFrame, but it's not used)
-    best_models = find_best_model_using_gridsearchcv(X, Y)
-
     # Selecting 'Random Forest' as it gives the highest best scores
     model = RandomForestRegressor()
-    model.fit(X_train, Y_train)
+    model.fit(X_train,Y_train)
+    model.score(X_test,Y_test)
+
+    cv = ShuffleSplit(n_splits=5, test_size=0.2, random_state=0)
+    cross_val_score(RandomForestRegressor(), X, Y, cv=cv)
 
     # Input values from the request
     var1 = float(request.GET.get('n1', 0))
